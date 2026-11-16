@@ -1,0 +1,12 @@
+bin/
+obj/
+.dotnet/
+.nuget/
+.appdata/
+.runtime/
+*.user
+*.suo
+.vs/
+artifacts/
+.package/
+dist/

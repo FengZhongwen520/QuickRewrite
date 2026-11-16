@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/QuickRewrite/QuickRewrite.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/QuickRewrite.SmokeTests/QuickRewrite.SmokeTests.csproj" />
+  </Folder>
+</Solution>

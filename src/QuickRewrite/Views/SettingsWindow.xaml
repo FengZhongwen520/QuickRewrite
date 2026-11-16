@@ -1,0 +1,231 @@
+<Window x:Class="QuickRewrite.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="QuickRewrite 设置" Width="640" Height="776"
+        Icon="pack://application:,,,/QuickRewrite;component/Assets/app.ico"
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" ShowInTaskbar="True"
+        Background="{DynamicResource AppBackgroundBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        FontFamily="Segoe UI Variable Text, Segoe UI"
+        PreviewKeyDown="Window_PreviewKeyDown">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="0" ResizeBorderThickness="0"
+                            GlassFrameThickness="0" CornerRadius="0"
+                            UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style x:Key="SettingsCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource PanelRaisedBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderSubtleBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="18,16" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+
+        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13.5" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+        </Style>
+
+        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+
+        <Style x:Key="SegmentOptionStyle" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="SegmentBorder" Background="Transparent"
+                                BorderBrush="Transparent" BorderThickness="1"
+                                CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="SegmentBorder" Property="Background" Value="{DynamicResource HoverFillBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SegmentBorder" Property="Background" Value="{DynamicResource EditorSurfaceBrush}" />
+                                <Setter TargetName="SegmentBorder" Property="BorderBrush" Value="{DynamicResource BorderSubtleBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border CornerRadius="10"
+            Background="{DynamicResource AppBackgroundBrush}"
+            BorderBrush="{DynamicResource BorderStrongBrush}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="34" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="12,1,6,0" Background="Transparent"
+                  MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <TextBlock Text="设置" FontSize="11" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center" />
+                <Button Content="×" Style="{StaticResource CaptionButtonStyle}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                        Click="Close_Click" ToolTip="关闭" />
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled" Margin="22,4,22,0">
+                <StackPanel>
+                    <Grid Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Width="44" Height="44" VerticalAlignment="Center"
+                               Source="pack://application:,,,/QuickRewrite;component/Assets/app-128.png"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="QuickRewrite 设置" FontSize="19" FontWeight="SemiBold" />
+                            <TextBlock Text="选中文字后按快捷键，即可在选区上方唤起改写菜单。"
+                                       FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"
+                                       Margin="0,3,0,0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Style="{StaticResource SettingsCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="快捷键" Style="{StaticResource SectionTitleStyle}" />
+                            <TextBlock Text="至少包含一个修饰键，保存后立即生效。"
+                                       FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                       Margin="0,3,0,10" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="HotkeyBox" Style="{StaticResource RoundedTextBoxStyle}" />
+                                <Button Grid.Column="1" Content="恢复默认" Style="{StaticResource GhostButtonStyle}"
+                                        Height="32" MinHeight="32" Padding="12,4" Margin="8,0,0,0"
+                                        Click="ResetHotkey_Click" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource SettingsCardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="AI 服务" Style="{StaticResource SectionTitleStyle}" />
+                            <TextBlock Text="选择改写使用的模型服务。"
+                                       FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                       Margin="0,3,0,12" />
+
+                            <Border Background="{DynamicResource ControlFillBrush}"
+                                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                                    BorderThickness="1" CornerRadius="8" Padding="2">
+                                <UniformGrid Columns="2">
+                                    <RadioButton x:Name="DemoProviderOption" Content="演示模式"
+                                                 Style="{StaticResource SegmentOptionStyle}"
+                                                 GroupName="ProviderOptions" Checked="Provider_Checked" />
+                                    <RadioButton x:Name="ApiProviderOption" Content="OpenAI 兼容接口"
+                                                 Style="{StaticResource SegmentOptionStyle}"
+                                                 GroupName="ProviderOptions" Checked="Provider_Checked" />
+                                </UniformGrid>
+                            </Border>
+
+                            <Grid Margin="0,14,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="120" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="最大输入字数" Style="{StaticResource FieldLabelStyle}" />
+                                    <TextBox x:Name="MaxInputBox" Style="{StaticResource RoundedTextBoxStyle}" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="2" Text="100～50,000"
+                                           FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                                           VerticalAlignment="Bottom" Margin="0,0,0,8" />
+                            </Grid>
+
+                            <StackPanel x:Name="ApiFields">
+                                <TextBlock Text="Base URL" Style="{StaticResource FieldLabelStyle}" />
+                                <TextBox x:Name="BaseUrlBox" Style="{StaticResource RoundedTextBoxStyle}"
+                                         Margin="0,0,0,12" />
+
+                                <Grid Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="120" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="模型名称" Style="{StaticResource FieldLabelStyle}" />
+                                        <TextBox x:Name="ModelBox" Style="{StaticResource RoundedTextBoxStyle}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="超时（秒）" Style="{StaticResource FieldLabelStyle}" />
+                                        <TextBox x:Name="TimeoutBox" Style="{StaticResource RoundedTextBoxStyle}" />
+                                    </StackPanel>
+                                </Grid>
+
+                                <TextBlock Text="API Key" Style="{StaticResource FieldLabelStyle}" />
+                                <PasswordBox x:Name="ApiKeyBox" Style="{StaticResource RoundedPasswordBoxStyle}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <TextBlock Text="API Key 会加密后保存在本机，优先使用 Windows DPAPI。"
+                               FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}"
+                               Margin="2,0,0,8" />
+                    <TextBlock Text="选中文字会发送到你配置的 AI 服务；演示模式不会联网。"
+                               FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}"
+                               Margin="2,0,0,8" TextWrapping="Wrap" />
+                    <TextBlock x:Name="SettingsPathText" FontSize="10"
+                               Foreground="{DynamicResource TextMutedBrush}"
+                               TextTrimming="CharacterEllipsis" Margin="2,0,0,2" />
+                    <TextBlock x:Name="VersionText" FontSize="10"
+                               Foreground="{DynamicResource TextMutedBrush}"
+                               Margin="2,4,0,0" />
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="2" BorderBrush="{DynamicResource BorderSubtleBrush}"
+                    BorderThickness="0,1,0,0" Padding="22,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="ErrorText" Foreground="{DynamicResource DangerBrush}"
+                               FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"
+                               Margin="0,0,14,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="取消" Style="{StaticResource GhostButtonStyle}"
+                                Height="36" MinHeight="36" Padding="16,8" Click="Cancel_Click" />
+                        <Button Content="保存设置" Style="{StaticResource PrimaryButtonStyle}"
+                                Height="36" MinHeight="36" Padding="20,8" Margin="8,0,0,0"
+                                Click="Save_Click" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
